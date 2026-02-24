@@ -637,6 +637,7 @@ def parser_1fc9(payload: str, msg: Message) -> PayDictT._1FC9:
             "65",
             "66",
             "67",
+            "6A",
             "6C",
             "90",
             F6,
