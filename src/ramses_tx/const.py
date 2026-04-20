@@ -121,6 +121,7 @@ SZ_SUPPLY_FAN_SPEED: Final = "supply_fan_speed"
 SZ_SUPPLY_FLOW: Final = "supply_flow"
 SZ_SUPPLY_TEMP: Final = "supply_temp"
 SZ_SPEED_CAPABILITIES: Final = "speed_capabilities"
+SZ_VENT_DEMAND: Final = "vent_demand"
 
 SZ_PRESENCE_DETECTED: Final = "presence_detected"
 

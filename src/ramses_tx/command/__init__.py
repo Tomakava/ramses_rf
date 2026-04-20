@@ -36,6 +36,7 @@ CODE_API_MAP = {
     f"{W_}|{Code._2411}": Command.set_fan_param,
     f"{RQ}|{Code._2411}": Command.get_fan_param,
     f"{I_}|{Code._12A0}": Command.put_indoor_humidity,
+    f"{I_}|{Code._31E0}": Command.put_ventilation_demand,
     f"{RQ}|{Code._1030}": Command.get_mix_valve_params,
     f"{W_}|{Code._1030}": Command.set_mix_valve_params,
     f"{RQ}|{Code._3220}": Command.get_opentherm_data,

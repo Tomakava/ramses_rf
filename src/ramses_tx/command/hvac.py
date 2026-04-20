@@ -126,6 +126,42 @@ class HvacMixins(CommandBase):
             W_, Code._22F7, PayloadT(f"00{pos}"), addr0=src_id, addr1=fan_id
         )
 
+    @classmethod  # constructor for I|31E0
+    def put_ventilation_demand(
+        cls,
+        fan_id: DeviceIdT | str,
+        demand: float | None,
+        *,
+        src_id: DeviceIdT | str | None = None,
+    ) -> _T:
+        """Send a ventilation demand percentage to a fan. (31E0)
+
+        :param fan_id: The device ID of the target fan (e.g., '32:155617')
+        :type fan_id: DeviceIdT | str
+        :param demand: The ventilation demand as a fraction 0.0–1.0 (0%–100%), or None
+        :type demand: float | None
+        :param src_id: The source device ID (e.g., '37:155617'); defaults to HGI_DEV_ADDR
+        :type src_id: DeviceIdT | str | None
+        :return: A Command object for the I|31E0 message
+        :rtype: Command
+        :raises CommandInvalid: If demand is outside the range 0.0–1.0
+
+        .. note::
+            - Payload format: ``0000{demand}00`` where demand is 00–FF (0x00=0%, 0xFF=100%)
+            - Example: ``I --- 37:155617 32:155617 --:------ 31E0 004 00000000`` (0%)
+            - Example: ``I --- 37:155617 32:155617 --:------ 31E0 004 0000FF00`` (100%)
+        """
+        if demand is None:
+            demand_hex = "00"
+        elif not isinstance(demand, float | int) or not 0 <= demand <= 1:
+            raise exc.CommandInvalid(f"demand is not a valid percentage: {demand}")
+        else:
+            demand_hex = f"{round(demand * 255):02X}"
+
+        return cls._from_attrs(
+            I_, Code._31E0, PayloadT(f"0000{demand_hex}00"), addr0=src_id, addr1=fan_id
+        )
+
     @classmethod
     def set_fan_param(
         cls: type[_T],

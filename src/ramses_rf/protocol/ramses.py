@@ -1152,7 +1152,7 @@ _DEV_KLASSES_HVAC: dict[str, dict[Code, dict[VerbT, Any]]] = {
         Code._2411: {RQ: {}, W_: {}},  # from a VMI (only?)
         Code._313F: {RQ: {}, W_: {}},  # from a VMI (only?)
         Code._31DA: {RQ: {}},  # to a VMI (only?)
-        # Code._31E0: {I_: {}},
+        Code._31E0: {I_: {}},
     },  # https://www.ithodaalderop.nl/nl-NL/professional/product/536-0124
     # None: {  # unknown, TODO: make generic HVAC
     #     _4401: {I_: {}},
