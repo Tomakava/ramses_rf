@@ -45,6 +45,7 @@ from ramses_rf.const import (
     SZ_SUPPLY_FLOW,
     SZ_SUPPLY_TEMP,
     SZ_TEMPERATURE,
+    SZ_VENT_DEMAND,
     DevType,
 )
 from ramses_rf.entity import class_by_attr
@@ -960,6 +961,48 @@ class HvacVentilator(FilterChange):  # FAN: RP/31DA, I/31D[9A], 2411
         )
 
         cmd = Command.set_fan_mode(self.id, fan_mode, src_id=src_id)
+        return await self._gwy.async_send_cmd(
+            cmd, num_repeats=2, priority=Priority.HIGH
+        )
+
+    async def vent_demand(self) -> float | None:
+        """Return the current ventilation demand as a fraction (0.0–1.0).
+
+        :return: The ventilation demand, or None if not available
+        :rtype: float | None
+        """
+        return cast(
+            float | None,
+            await self.entity_state.get_value(Code._31E0, key=SZ_VENT_DEMAND),
+        )
+
+    async def put_ventilation_demand(self, demand: float | None) -> Packet:
+        """Send a ventilation demand percentage to this fan via a bound REM.
+
+        :param demand: The ventilation demand as a fraction 0.0–1.0, or None
+        :type demand: float | None
+        :raises CommandInvalid: If no bound REM or HGI is available
+        :return: The sent packet
+        :rtype: Packet
+        """
+        src_id = self.get_bound_rem()
+
+        if not src_id:
+            if self.hgi:
+                src_id = self.hgi.id
+            else:
+                raise exc.CommandInvalid(
+                    f"{self}: Cannot send ventilation demand without a bound REM or HGI"
+                )
+
+        _LOGGER.debug(
+            "Sending put_ventilation_demand %.0f%% to %s via src %s",
+            (demand or 0) * 100,
+            self.id,
+            src_id,
+        )
+
+        cmd = Command.put_ventilation_demand(self.id, demand, src_id=src_id)
         return await self._gwy.async_send_cmd(
             cmd, num_repeats=2, priority=Priority.HIGH
         )

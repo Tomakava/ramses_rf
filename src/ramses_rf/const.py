@@ -89,6 +89,7 @@ from ramses_tx.const import (
     SZ_UNKNOWN as SZ_UNKNOWN,
     SZ_UNTIL as SZ_UNTIL,
     SZ_VALUE as SZ_VALUE,
+    SZ_VENT_DEMAND as SZ_VENT_DEMAND,
     SZ_WINDOW_OPEN as SZ_WINDOW_OPEN,
     SZ_ZONE_CLASS as SZ_ZONE_CLASS,
     SZ_ZONE_IDX as SZ_ZONE_IDX,
