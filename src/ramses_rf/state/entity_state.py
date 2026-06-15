@@ -535,7 +535,7 @@ class EntityState:
             # Ensure timezone awareness for legacy naive dt
             msg_dtm = msg.dtm
             if msg_dtm.tzinfo is None:
-                msg_dtm = msg_dtm.replace(tzinfo=UTC)
+                msg_dtm = msg_dtm.astimezone(UTC)
 
             if msg_dtm > latest:
                 latest = msg_dtm

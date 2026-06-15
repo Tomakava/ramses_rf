@@ -53,7 +53,7 @@ class AwareDatetime(dt):
     def fromisoformat(cls, date_string: str) -> "AwareDatetime":
         _dt = super().fromisoformat(date_string)
         if _dt.tzinfo is None:
-            _dt = _dt.replace(tzinfo=dt_module.UTC)
+            _dt = _dt.astimezone(dt_module.UTC)
         return cls(
             _dt.year,
             _dt.month,
